@@ -6,24 +6,29 @@ namespace trafficlights
 {
     class Program
     {
-        // TODO All off function...
-        // TODO exit handler...
-
         static void Main(string[] args)
         {
             const int redPin = 9;
             const int amberPin = 10;
             const int greenPin = 11;
-
+  
 	    GpioController gpio = new GpioController();
             gpio.OpenPin(redPin, PinMode.Output);
             gpio.OpenPin(amberPin, PinMode.Output);
             gpio.OpenPin(greenPin, PinMode.Output);
 
-            // Ensure all lights are off
-            gpio.Write(redPin, PinValue.Low);
-            gpio.Write(amberPin, PinValue.Low);
-            gpio.Write(greenPin, PinValue.Low);
+            void AllLightsOff()
+            {
+                gpio.Write(redPin, PinValue.Low);
+                gpio.Write(amberPin, PinValue.Low);
+                gpio.Write(greenPin, PinValue.Low);
+            }
+
+            Console.CancelKeyPress += delegate {
+                AllLightsOff();
+            };
+
+            AllLightsOff();
 
             while (true) {
                 // Red
